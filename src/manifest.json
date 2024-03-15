@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Search All Tabs for Text",
+  "version": "1.0.0",
+  "description": "Search all open tabs for text.",
+  "developer": {
+    "name": "ericchase",
+    "url": "https://addons.mozilla.org/en-US/firefox/addon/maximize-all-windows/"
+  },
+  "permissions": [
+    "scripting",
+    "tabs"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "images/icon-16.png",
+      "32": "images/icon-32.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "minimum_chrome_version": "120",
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

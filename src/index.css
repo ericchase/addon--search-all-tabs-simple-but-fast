@@ -1,0 +1,5 @@
+#results > div {
+  cursor: pointer;
+  padding-bottom: 0.5em;
+  text-decoration: underline;
+}
