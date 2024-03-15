@@ -34,16 +34,25 @@ chrome.runtime.onMessage.addListener((/**@type {Message}*/ message, sender, send
       if (div_results.childElementCount === 0) {
         const div = document.createElement('div');
         div.textContent = '0 matches.';
-        div_results.appendChild(div);
+        div_results.append(div);
       }
-      setTimeout(() => input_query.focus(), 100);
+      setTimeout(() => {
+        input_query.focus();
+        input_query.select();
+      }, 10);
       break;
     }
     case 'result': {
-      const div = document.createElement('button');
-      div.textContent = message.data.tab.title;
-      div_results.appendChild(div);
-      div.addEventListener('click', () => {
+      const button = document.createElement('button');
+      const div_title = document.createElement('div');
+      div_title.classList.add('title');
+      div_title.textContent = message.data.tab.title;
+      const div_url = document.createElement('div');
+      div_url.classList.add('url');
+      div_url.textContent = message.data.tab.url;
+      button.append(div_title, div_url);
+      div_results.append(button);
+      button.addEventListener('click', () => {
         chrome.tabs.update(message.data.tab.id, { active: true });
         chrome.windows.update(message.data.tab.windowId, { focused: true });
       });
@@ -52,14 +61,24 @@ chrome.runtime.onMessage.addListener((/**@type {Message}*/ message, sender, send
   }
 });
 
+window.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Escape' || ev.key === ' ') {
+    setTimeout(() => {
+      input_query.focus();
+      input_query.select();
+    }, 10);
+  }
+});
 input_query.addEventListener('keydown', (ev) => {
   if (ev.repeat === true) {
     return;
   }
   if (ev.key === 'Enter') {
     initiateSearch();
+    input_query.blur();
   }
 });
+
 button_search.addEventListener('click', () => {
   initiateSearch();
 });
@@ -93,5 +112,3 @@ function sendMessage(text, options) {
     chrome.runtime.sendMessage(message);
   }
 }
-
-input_query.focus();

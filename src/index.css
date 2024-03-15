@@ -1,5 +1,27 @@
-#results > div {
-  cursor: pointer;
-  padding-bottom: 0.5em;
-  text-decoration: underline;
+#information {
+  color: gray;
+  margin-top: 0.5em;
+}
+
+#results {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: 0.25em;
+
+  & > button {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 0.25em;
+    cursor: pointer;
+    text-align: left;
+
+    & > .url {
+      text-decoration: underline;
+    }
+
+    &:hover {
+      background-color: lightgray;
+    }
+  }
 }
