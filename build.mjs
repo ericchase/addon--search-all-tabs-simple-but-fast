@@ -12,7 +12,7 @@ JSON.merge = function (text_a, text_b) {
 };
 
 const version_obj = JSON.parse(await readFile('./version.json', { encoding: 'utf8' }));
-// version_obj.patch++;
+version_obj.patch++;
 await writeFile('./version.json', JSON.stringify(version_obj), { encoding: 'utf8' });
 const version = `${version_obj.major}.${version_obj.minor}.${version_obj.patch}`;
 
