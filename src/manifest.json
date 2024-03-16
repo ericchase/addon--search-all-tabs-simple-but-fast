@@ -3,10 +3,7 @@
   "name": "Search All Tabs for Text",
   "version": "1.0.0",
   "description": "Search all open tabs for text.",
-  "developer": {
-    "name": "ericchase",
-    "url": "???"
-  },
+  "author": "ericchase",
   "permissions": [
     "scripting",
     "tabs"
