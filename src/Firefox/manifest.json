@@ -3,5 +3,10 @@
     "scripts": [
       "service-worker.js"
     ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "120"
+    }
   }
 }
