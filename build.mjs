@@ -20,10 +20,18 @@ const manifest_core = JSON.parse(await readFile('./src/manifest.json', { encodin
 manifest_core.version = version;
 
 const paths = [
-  'images/icon-128.png',
-  'images/icon-16.png',
-  'images/icon-32.png',
-  'images/icon-48.png',
+  'icons/icon-16.png',
+  'icons/icon-32.png',
+  'icons/icon-48.png',
+  'icons/icon-128.png',
+  'icons/icon-dark-16.png',
+  'icons/icon-dark-32.png',
+  'icons/icon-dark-48.png',
+  'icons/icon-dark-128.png',
+  'icons/icon-light-16.png',
+  'icons/icon-light-32.png',
+  'icons/icon-light-48.png',
+  'icons/icon-light-128.png',
   'index.css',
   'normalize.css',
   'index.html',

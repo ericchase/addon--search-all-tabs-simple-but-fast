@@ -84,11 +84,17 @@ function initiateSearch(caseSensitive = false) {
   button_case_sensitive_search.toggleAttribute('disabled', true);
   div_results.replaceChildren();
 
+  const div_searching = document.createElement('div');
+  div_searching.setAttribute('id', 'searching');
+  div_searching.textContent = 'Searching...';
+  div_results.append(div_searching);
+
   const port = chrome.runtime.connect();
   port.onMessage.addListener(({ tab, inBody, inTitle }, port) => {
     addResult({ tab, inBody, inTitle });
   });
   port.onDisconnect.addListener((port) => {
+    div_searching.remove();
     input_query.toggleAttribute('disabled', false);
     button_search.toggleAttribute('disabled', false);
     button_case_sensitive_search.toggleAttribute('disabled', false);
