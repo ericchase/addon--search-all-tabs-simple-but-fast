@@ -1,9 +1,12 @@
 {
   "scripts": {
-    "build": "node ./build.mjs"
+    "build": "node ./build.mjs",
+    "format-debug": "prettier . --debug-check",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@types/chrome": "^0.0.263",
-    "@types/node": "^20.11.27"
+    "@types/node": "^20.11.27",
+    "prettier": "^3.2.5"
   }
 }

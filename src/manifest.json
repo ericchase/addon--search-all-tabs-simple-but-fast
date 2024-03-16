@@ -4,13 +4,8 @@
   "version": "1.0.0",
   "description": "Search all open tabs for text.",
   "author": "ericchase",
-  "permissions": [
-    "scripting",
-    "tabs"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
   "action": {},
   "icons": {
     "16": "images/icon-16.png",

@@ -1,17 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Search All Tabs for Text</title>
+    <link rel="stylesheet" href="./normalize.css" />
     <link rel="stylesheet" href="./index.css" />
     <script src="./index.js" type="module"></script>
   </head>
   <body>
-    <input type="text" id="query" placeholder="Search tabs for..." autofocus />
-    <button id="search">Search</button>
-    <div id="information">Press Escape or Spacebar to focus the search box.</div>
-    <br />
-    <div id="results"></div>
+    <template id="template-result">
+      <button>
+        <div class="img-container"><img /></div>
+        <div class="details-container">
+          <div class="title"></div>
+          <div class="url"></div>
+          <div class="where"></div>
+        </div>
+      </button>
+    </template>
+    <aside hidden>
+      <div>You must enable the "Access your data for all websites" permission to use this extension.</div>
+      <ul>
+        <li>Navigate to the <strong>Add-ons Manager</strong> page (about:addons).</li>
+        <li>Click the <strong>"Search All Tabs for Text"</strong> extension item.</li>
+        <li>Click the <strong>"Permissions"</strong> tab on the right side of the "Details" tab.</li>
+        <li>Toggle on the <strong>"Access your data for all websites"</strong> permission.</li>
+        <li>Refresh this page.</li>
+      </ul>
+    </aside>
+    <main>
+      <div id="search-container">
+        <input type="text" id="query" placeholder="Search tabs for..." autofocus />
+        <button id="search">Search</button>
+        <button id="case-sensitive-search">Case-sensitive Search</button>
+      </div>
+      <div id="instructions">
+        Press Escape or Spacebar to focus the search box.
+        <br />
+        Press Enter to perform search.
+        <br />
+        Press Ctrl-Enter to perform case-sensitive search.
+      </div>
+      <br />
+      <div id="results"></div>
+    </main>
   </body>
 </html>

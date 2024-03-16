@@ -15,9 +15,11 @@ const paths = [
   'images/icon-16.png',
   'images/icon-32.png',
   'images/icon-48.png',
+  'helpers.js',
   'index.css',
   'index.html',
   'index.js',
+  'normalize.css',
   'service-worker.js',
 ];
 
