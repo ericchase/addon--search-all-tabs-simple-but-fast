@@ -1,17 +1,3 @@
-/**
- * @typedef Message
- * @property {string} text,
- * @property {*} data,
- */
-
-let uuid = 0;
-
-sendMessage('uuid', {
-  callback: (response) => {
-    uuid = response.uuid;
-  },
-});
-
 const input_query =
   /** @type {HTMLInputElement} */
   (document.getElementById('query'));
@@ -22,51 +8,62 @@ const button_search =
   /** @type {HTMLButtonElement} */
   (document.getElementById('search'));
 
-chrome.runtime.onMessage.addListener((/**@type {Message}*/ message, sender, sendResponse) => {
-  if (message.data.uuid && message.data.uuid !== uuid) {
-    return;
+/**
+ * @param {chrome.tabs.Tab} tab
+ */
+function addResult(tab) {
+  const button = document.createElement('button');
+  const div_title = document.createElement('div');
+  const div_url = document.createElement('div');
+  div_title.classList.add('title');
+  div_url.classList.add('url');
+  if (tab.title) {
+    div_title.textContent = tab.title;
   }
+  if (tab.url) {
+    div_url.textContent = tab.url;
+  }
+  button.addEventListener('click', () => {
+    if (tab.id && tab.windowId) {
+      chrome.tabs.update(tab.id, { active: true });
+      chrome.windows.update(tab.windowId, { focused: true });
+    }
+  });
+  button.append(div_title, div_url);
+  div_results.append(button);
+}
 
-  switch (message.text) {
-    case 'done': {
-      input_query.toggleAttribute('disabled', false);
-      button_search.toggleAttribute('disabled', false);
-      if (div_results.childElementCount === 0) {
-        const div = document.createElement('div');
-        div.textContent = '0 matches.';
-        div_results.append(div);
-      }
-      setTimeout(() => {
-        input_query.focus();
-        input_query.select();
-      }, 10);
-      break;
+function initiateSearch() {
+  input_query.toggleAttribute('disabled', true);
+  button_search.toggleAttribute('disabled', true);
+  div_results.replaceChildren();
+
+  const port = chrome.runtime.connect();
+  port.onMessage.addListener((message, port) => {
+    addResult(message);
+  });
+  port.onDisconnect.addListener((port) => {
+    input_query.toggleAttribute('disabled', false);
+    button_search.toggleAttribute('disabled', false);
+    if (div_results.childElementCount === 0) {
+      const div = document.createElement('div');
+      div.textContent = '0 matches.';
+      div_results.append(div);
     }
-    case 'result': {
-      const button = document.createElement('button');
-      const div_title = document.createElement('div');
-      div_title.classList.add('title');
-      div_title.textContent = message.data.tab.title;
-      const div_url = document.createElement('div');
-      div_url.classList.add('url');
-      div_url.textContent = message.data.tab.url;
-      button.append(div_title, div_url);
-      div_results.append(button);
-      button.addEventListener('click', () => {
-        chrome.tabs.update(message.data.tab.id, { active: true });
-        chrome.windows.update(message.data.tab.windowId, { focused: true });
-      });
-      break;
-    }
-  }
-});
+    setTimeout(() => {
+      input_query.focus();
+      input_query.select();
+    }, 0);
+  });
+  port.postMessage(input_query.value);
+}
 
 window.addEventListener('keydown', (ev) => {
   if (ev.key === 'Escape' || ev.key === ' ') {
     setTimeout(() => {
       input_query.focus();
       input_query.select();
-    }, 10);
+    }, 0);
   }
 });
 input_query.addEventListener('keydown', (ev) => {
@@ -78,37 +75,6 @@ input_query.addEventListener('keydown', (ev) => {
     input_query.blur();
   }
 });
-
 button_search.addEventListener('click', () => {
   initiateSearch();
 });
-
-function initiateSearch() {
-  input_query.toggleAttribute('disabled', true);
-  button_search.toggleAttribute('disabled', true);
-  div_results.replaceChildren();
-  sendMessage('search', { data: { uuid, query: input_query.value } });
-}
-
-/**
- * @param {string} text
- * @param {object} [options]
- * @param {(response: any)=>void} [options.callback]
- * @param {*} [options.data]
- */
-function sendMessage(text, options) {
-  const callback = options?.callback;
-  const data = options?.data ?? {};
-
-  /** @type {Message} */
-  const message = {
-    text,
-    data,
-  };
-
-  if (callback) {
-    chrome.runtime.sendMessage(message, callback);
-  } else {
-    chrome.runtime.sendMessage(message);
-  }
-}
