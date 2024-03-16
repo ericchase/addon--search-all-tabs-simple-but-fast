@@ -52,7 +52,7 @@ ul > li {
     & > .details-container {
       display: flex;
       flex-flow: column;
-      gap: 0em;
+      gap: 0.125em;
 
       & > .url {
         text-decoration: underline;

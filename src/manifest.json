@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Search All Tabs for Text",
   "version": "1.0.0",
-  "description": "Search all open tabs for text.",
+  "description": "Search the body content and page title of all open tabs for specific text.",
   "author": "ericchase",
   "permissions": ["scripting", "tabs"],
   "host_permissions": ["<all_urls>"],

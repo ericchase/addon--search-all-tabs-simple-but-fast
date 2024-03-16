@@ -24,10 +24,6 @@ const template_result =
   /** @type {HTMLTemplateElement} */
   (document.getElementById('template-result'));
 
-console.log(template_result);
-console.log(document.importNode(template_result, true));
-console.log(document.importNode(template_result, true).content);
-
 /**
  * @param {object} args
  * @param {chrome.tabs.Tab} args.tab
