@@ -1,6 +1,7 @@
 {
   "scripts": {
     "build": "node ./build.mjs",
+    "bundle": "node ./bundle.mjs",
     "format-debug": "prettier . --debug-check",
     "format": "prettier . --write"
   },

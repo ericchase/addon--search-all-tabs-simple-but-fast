@@ -1,0 +1,12 @@
+run inkscape --export-filename=icon-16.png -w 16 icon.svg
+run inkscape --export-filename=icon-32.png -w 32 icon.svg
+run inkscape --export-filename=icon-48.png -w 48 icon.svg
+run inkscape --export-filename=icon-128.png -w 128 icon.svg
+run inkscape --export-filename=icon-light-16.png -w 16 icon-light.svg
+run inkscape --export-filename=icon-light-32.png -w 32 icon-light.svg
+run inkscape --export-filename=icon-light-48.png -w 48 icon-light.svg
+run inkscape --export-filename=icon-light-128.png -w 128 icon-light.svg
+run inkscape --export-filename=icon-dark-16.png -w 16 icon-dark.svg
+run inkscape --export-filename=icon-dark-32.png -w 32 icon-dark.svg
+run inkscape --export-filename=icon-dark-48.png -w 48 icon-dark.svg
+run inkscape --export-filename=icon-dark-128.png -w 128 icon-dark.svg

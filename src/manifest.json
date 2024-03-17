@@ -2,40 +2,11 @@
   "manifest_version": 3,
   "name": "Search All Tabs for Text",
   "version": "1.0.0",
-  "description": "Search the body content and page title of all open tabs for specific text.",
+  "description": "Search the title and body content of all open tabs for specific text.",
   "author": "ericchase",
   "permissions": ["scripting", "tabs"],
   "host_permissions": ["<all_urls>"],
-  "action": {
-    "default_icon": {
-      "16": "icons/icon-dark-16.png",
-      "32": "icons/icon-dark-32.png",
-      "48": "icons/icon-dark-48.png",
-      "128": "icons/icon-dark-128.png"
-    },
-    "theme_icons": [
-      {
-        "light": "icons/icon-light-16.png",
-        "dark": "icons/icon-dark-16.png",
-        "size": 16
-      },
-      {
-        "light": "icons/icon-light-32.png",
-        "dark": "icons/icon-dark-32.png",
-        "size": 32
-      },
-      {
-        "light": "icons/icon-light-48.png",
-        "dark": "icons/icon-dark-48.png",
-        "size": 48
-      },
-      {
-        "light": "icons/icon-light-128.png",
-        "dark": "icons/icon-dark-128.png",
-        "size": 128
-      }
-    ]
-  },
+  "action": {},
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",

@@ -1,10 +1,39 @@
 {
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-dark-16.png",
+      "32": "icons/icon-dark-32.png",
+      "48": "icons/icon-dark-48.png",
+      "128": "icons/icon-dark-128.png"
+    },
+    "theme_icons": [
+      {
+        "dark": "icons/icon-dark-16.png",
+        "light": "icons/icon-light-16.png",
+        "size": 16
+      },
+      {
+        "dark": "icons/icon-dark-32.png",
+        "light": "icons/icon-light-32.png",
+        "size": 32
+      },
+      {
+        "dark": "icons/icon-dark-48.png",
+        "light": "icons/icon-light-48.png",
+        "size": 48
+      },
+      {
+        "dark": "icons/icon-dark-128.png",
+        "light": "icons/icon-light-128.png",
+        "size": 128
+      }
+    ]
+  },
   "background": {
     "scripts": ["service-worker.js"]
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "{e1818644-efe3-403e-a6bf-b913f9e16918}",
       "strict_min_version": "120.0"
     }
   }

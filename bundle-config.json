@@ -1,0 +1,12 @@
+{
+  "Chrome": {
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu7gIciRSJjVge9AbVDhCS1HNrSffjoUBaXctNFPLjqGf5br/a4PsC4mFA5AaxblieeYYCpE47keqYVuq6bjV3e9rGQKzuPhwyK2IustaJO+GmpswQ86LhkzrTgxERKrjqMltG6ghIeGY/3qzc6IekV2gy0M1APMnsmA9kAm8rorS2yK21jq0913wQlxfsQJN/2gKRxUn+fPBD62RZduLD08cug78dGRYuiofPvO6+TE7AKyGTRqnDG33/A07MyFXY7PE42o1ChIoMYLJ7qb7CkjLbvf4eEYmduIhb/e/BVll3LJbhIPBfhge4aVi7pM9eIsXR+FKBaTQKt7Z5tkZRQIDAQAB"
+  },
+  "Firefox": {
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "{e1818644-efe3-403e-a6bf-b913f9e16918}"
+      }
+    }
+  }
+}
