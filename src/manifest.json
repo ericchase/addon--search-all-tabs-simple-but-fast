@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Search the title and body content of all open tabs for specific text.",
   "author": "ericchase",
-  "permissions": ["scripting", "tabs"],
+  "permissions": ["scripting"],
   "host_permissions": ["<all_urls>"],
   "action": {},
   "icons": {
