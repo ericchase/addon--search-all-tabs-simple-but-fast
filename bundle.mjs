@@ -15,7 +15,7 @@ import {
 await run('pnpm', ['format']);
 await deleteDirectory('./build/');
 
-// await incrementVersionPatch();
+await incrementVersionPatch();
 
 const core_manifest = await readJSONFile('./src/manifest.json');
 core_manifest.version = await getSemanticVersion();

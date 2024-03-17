@@ -1,5 +1,5 @@
 import { copyFile } from 'node:fs/promises';
-import { createDirectory, getPaths, mergeObjects, readJSONFile, writeJSONFile } from './lib.mjs';
+import { createDirectory, getPaths, writeJSONFile } from './lib.mjs';
 
 /**
  * @param {string} browser

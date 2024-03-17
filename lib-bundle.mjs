@@ -1,6 +1,6 @@
 import archiver from 'archiver';
 import { createWriteStream } from 'node:fs';
-import { createDirectory, getBundleConfig, mergeObjects, toSnakeCase } from './lib.mjs';
+import { createDirectory, toSnakeCase } from './lib.mjs';
 
 /**
  * @param {string} browser
