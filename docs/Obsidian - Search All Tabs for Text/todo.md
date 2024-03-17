@@ -1,3 +1,4 @@
 - wait for chrome version to be approved
 - check over text for issues
 - add dark mode to extension page
+- add homepage_url for chrome manifest
