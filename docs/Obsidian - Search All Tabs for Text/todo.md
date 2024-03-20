@@ -1,4 +1,5 @@
-- wait for chrome version to be approved
+- ~~wait for chrome version to be approved~~
 - check over text for issues
 - add dark mode to extension page
 - add homepage_url for chrome manifest
+- maybe add a timeout/restart for the cases of discarded tabs
