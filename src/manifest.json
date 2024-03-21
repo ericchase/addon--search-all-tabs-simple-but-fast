@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Search All Tabs for Text",
+  "name": "Search All Tabs (Simple but Fast)",
   "version": "1.0.0",
   "description": "Search the title and body content of all open tabs for specific text.",
   "author": "ericchase",

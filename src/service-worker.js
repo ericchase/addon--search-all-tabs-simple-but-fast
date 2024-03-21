@@ -16,17 +16,22 @@ chrome.runtime.onConnect.addListener((port) => {
  * @param {boolean} args.caseSensitive
  */
 async function search({ port, query, caseSensitive }) {
+  // if a tab is discarded, it cannot be searched
+  // try to restore any discarded tabs before searching
+  await restoreDiscardedTabs();
+  // activate search page again
+  await activatePortTab(port);
+
   const jobs = [];
-  try {
-    for (const tab of await chrome.tabs.query({})) {
-      jobs.push(executeScript({ port, query, tab, caseSensitive }));
+  // queue up jobs
+  for (const tab of await chrome.tabs.query({})) {
+    if (tab.id) {
+      jobs.push(executeSearch({ port, query, tab, caseSensitive }));
     }
-  } catch (err) {
-    console.log(err);
   }
+  // wait for all jobs to finish before returning
   await Promise.allSettled(jobs);
 }
-
 /**
  * @param {object} args
  * @param {chrome.runtime.Port} args.port
@@ -34,39 +39,103 @@ async function search({ port, query, caseSensitive }) {
  * @param {chrome.tabs.Tab} args.tab
  * @param {boolean} args.caseSensitive
  */
-function executeScript({ port, query, tab, caseSensitive }) {
+function executeSearch({ port, query, tab, caseSensitive }) {
   return new Promise(async (resolve, reject) => {
     try {
-      if (tab.id) {
-        if (tab.discarded === true) {
-          await chrome.tabs.reload(tab.id);
-        }
-        const results = await chrome.scripting.executeScript({
-          args: [query, caseSensitive],
-          func: searchTabText,
-          target: {
-            tabId: tab.id,
-          },
-        });
-        const inBody = (function () {
-          for (const result of results) {
-            if (result && result.result === true) {
-              return true;
-            }
+      const results = await chrome.scripting.executeScript({
+        args: [query, caseSensitive],
+        func: searchTabText,
+        target: { tabId: tab.id },
+      });
+      const inBody = (function () {
+        for (const result of results) {
+          if (result && result.result === true) {
+            return true;
           }
-          return false;
-        })();
-        const inTitle = searchTabTitle(tab, query, caseSensitive);
-        if (inBody || inTitle) {
-          port.postMessage({ tab, inBody, inTitle });
-          return resolve(true);
         }
+        return false;
+      })();
+      const inTitle = searchTabTitle(tab, query, caseSensitive);
+      if (inBody || inTitle) {
+        port.postMessage({ tab, inBody, inTitle });
+        return resolve(true);
       }
     } catch (error) {
       console.log(tab.id, tab.title, error);
     }
     return reject();
   });
+}
+
+function restoreDiscardedTabs() {
+  return new Promise(async (resolve) => {
+    const updateSet = new Set();
+    const loadSet = new Set();
+
+    function checkIfDone() {
+      if (updateSet.size === 0 && loadSet.size === 0) {
+        return resolve(true);
+      }
+    }
+
+    /** @param {number} tabId */
+    function queueUpdate(tabId) {
+      updateSet.add(tabId);
+    }
+    /** @param {number} tabId */
+    function queueLoad(tabId) {
+      loadSet.add(tabId);
+    }
+    /** @param {number} tabId */
+    function endUpdate(tabId) {
+      updateSet.delete(tabId);
+    }
+    /** @param {number} tabId */
+    function endLoad(tabId) {
+      loadSet.delete(tabId);
+      checkIfDone();
+    }
+
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      switch (changeInfo.status) {
+        case 'complete': {
+          if (loadSet.has(tabId)) {
+            endLoad(tabId);
+          }
+          break;
+        }
+        case 'loading': {
+          if (updateSet.has(tabId)) {
+            queueLoad(tabId);
+            endUpdate(tabId);
+          }
+          break;
+        }
+      }
+    });
+
+    for (const tab of await chrome.tabs.query({})) {
+      if (tab.id && tab.discarded === true) {
+        try {
+          await chrome.windows.update(tab.windowId, { focused: true });
+          await chrome.tabs.update(tab.id, { active: true });
+          queueUpdate(tab.id);
+        } catch (err) {}
+      }
+    }
+
+    checkIfDone();
+  });
+}
+
+/**
+ * @param {chrome.runtime.Port} port
+ */
+async function activatePortTab(port) {
+  if (port.sender?.tab?.id !== null && port.sender?.tab?.id !== undefined) {
+    await chrome.tabs.update(port.sender.tab.id, { active: true });
+    await chrome.windows.update(port.sender.tab.windowId, { focused: true });
+  }
 }
 
 /**

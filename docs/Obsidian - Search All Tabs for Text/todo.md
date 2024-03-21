@@ -3,3 +3,4 @@
 - add dark mode to extension page
 - add homepage_url for chrome manifest
 - maybe add a timeout/restart for the cases of discarded tabs
+- add option for discarded tabs

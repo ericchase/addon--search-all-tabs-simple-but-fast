@@ -91,7 +91,7 @@ export async function incrementVersionPatch() {
 
 /** @param {string} text */
 export function toSnakeCase(text) {
-  return text.toLowerCase().replace(' ', '-');
+  return text.toLowerCase().replace(/ /g, '-');
 }
 
 /**

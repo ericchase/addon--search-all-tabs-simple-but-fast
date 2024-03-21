@@ -2,5 +2,6 @@
   "background": {
     "service_worker": "service-worker.js"
   },
+  "homepage_url": "https://chromewebstore.google.com/detail/search-all-tabs-for-text/lmeapdggiiabkbhbkdcppjnfkcfjhlpo",
   "minimum_chrome_version": "120"
 }

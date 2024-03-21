@@ -86,7 +86,8 @@ function initiateSearch(caseSensitive = false) {
 
   const div_searching = document.createElement('div');
   div_searching.setAttribute('id', 'searching');
-  div_searching.textContent = 'Searching...';
+
+  div_searching.textContent = 'Searching... (possibly waiting on discarded tabs to be restored)';
   div_results.append(div_searching);
 
   const port = chrome.runtime.connect();
