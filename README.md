@@ -2,8 +2,8 @@ A browser addon for searching the visible text content in every open tab.
 
 ### Chrome
 
-https://chromewebstore.google.com/detail/search-all-tabs-for-text/lmeapdggiiabkbhbkdcppjnfkcfjhlpo
+https://chromewebstore.google.com/detail/search-all-tabs-simple-bu/lmeapdggiiabkbhbkdcppjnfkcfjhlpo
 
 ### Firefox
 
-https://addons.mozilla.org/en-US/firefox/addon/search-all-tabs-for-text/
+https://addons.mozilla.org/en-US/firefox/addon/searchalltabs-simplebutfast/
