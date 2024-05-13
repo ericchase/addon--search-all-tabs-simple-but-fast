@@ -2,46 +2,22 @@ import { execFile } from 'node:child_process';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
-const build_config = await readJSONFile('./build-config.json');
-const bundle_config = await readJSONFile('./bundle-config.json');
-
-export function getBrowsers() {
-  return build_config.browsers;
-}
-
-export function getPaths() {
-  return build_config.paths;
-}
-
-/** @param {string} browser */
-export function getBundleConfig(browser) {
-  return bundle_config[browser];
-}
-
-/**
- * @param {*[]} objects
- */
+/** @param {any[]} objects */
 export function mergeObjects(...objects) {
-  // console.log('--- start');
-  const out = {};
+  const to = /** @type {Record<any,any>} */ ({});
   for (const from of objects) {
-    // console.log('from', from);
     if (typeof from !== 'object') continue;
     for (const key in from) {
       if (from.hasOwnProperty(key)) {
-        if (typeof from[key] === 'object' && !Array.isArray(from[key])) {
-          out[key] = mergeObjects(out[key], from[key]);
+        if (typeof from[key] === 'object' && Array.isArray(from[key]) === false) {
+          to[key] = mergeObjects(to[key], from[key]);
         } else {
-          out[key] = from[key];
+          to[key] = from[key];
         }
       }
     }
   }
-  // console.log('out', out);
-  // console.log('--- end');
-  return out;
-  // props in `b` will overwrite props in `a` with same name
-  //return { ...a, ...b };
+  return to;
 }
 
 /** @param {string} path */
@@ -56,10 +32,18 @@ export async function readTextFile(path) {
 
 /**
  * @param {string} path
- * @param {*} obj
+ * @param {any} obj
  */
 export async function writeJSONFile(path, obj) {
   await writeFile(path, JSON.stringify(obj), { encoding: 'utf8' });
+}
+
+/**
+ * @param {string} path
+ * @param {string} string
+ */
+export async function writeTextFile(path, string) {
+  await writeFile(path, string, { encoding: 'utf8' });
 }
 
 /**
@@ -77,16 +61,6 @@ export async function createDirectory(path, isFile = false) {
 /** @param {string} path */
 export async function deleteDirectory(path) {
   await rm(path, { recursive: true, force: true });
-}
-
-export async function getSemanticVersion() {
-  const { major, minor, patch } = await readJSONFile('./version.json');
-  return `${major}.${minor}.${patch}`;
-}
-
-export async function incrementVersionPatch() {
-  const { major, minor, patch } = await readJSONFile('./version.json');
-  await writeJSONFile('./version.json', { major, minor, patch: patch + 1 });
 }
 
 /** @param {string} text */
@@ -108,4 +82,29 @@ export function run(program, args) {
       return resolve({ stdout, stderr });
     });
   });
+}
+
+// config files
+
+export async function getBrowsers() {
+  return (await readJSONFile('./build-config.json')).browsers;
+}
+
+/** @param {string} browser */
+export async function getBundleConfig(browser) {
+  return (await readJSONFile('./bundle-config.json'))[browser];
+}
+
+export async function getPaths() {
+  return (await readJSONFile('./build-config.json')).paths;
+}
+
+export async function getSemanticVersion() {
+  const { major, minor, patch } = await readJSONFile('./version.json');
+  return `${major}.${minor}.${patch}`;
+}
+
+export async function incrementVersionPatch() {
+  const { major, minor, patch } = await readJSONFile('./version.json');
+  await writeJSONFile('./version.json', { major, minor, patch: patch + 1 });
 }

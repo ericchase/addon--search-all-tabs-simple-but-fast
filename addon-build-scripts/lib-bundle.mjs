@@ -4,7 +4,7 @@ import { createDirectory, toSnakeCase } from './lib.mjs';
 
 /**
  * @param {string} browser
- * @param {*} manifest
+ * @param {any} manifest
  */
 export async function bundle(browser, manifest) {
   await createDirectory(`./release/${browser}`);

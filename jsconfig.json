@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
-    "checkJs": true,
+    "module": "ESNext",
     "moduleDetection": "force",
-    "strict": true
+    "target": "ESNext",
+    "checkJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
   },
-  "exclude": ["node_modules", "**/node_modules/*"]
+  "include": ["./src", "./addon-build-scripts"]
 }

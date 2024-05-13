@@ -1,13 +1,13 @@
 {
   "scripts": {
-    "build": "node ./build.mjs",
-    "bundle": "node ./bundle.mjs",
+    "build": "bun run ./addon-build-scripts/build.mjs",
+    "bundle": "bun run ./addon-build-scripts/bundle.mjs",
     "format-debug": "prettier . --debug-check",
     "format": "prettier . --write"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.263",
-    "@types/node": "^20.11.27",
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^20.12.11",
     "archiver": "^7.0.1",
     "prettier": "^3.2.5"
   }

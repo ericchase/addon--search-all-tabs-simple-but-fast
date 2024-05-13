@@ -4,3 +4,4 @@
 - add homepage_url for chrome manifest
 - maybe add a timeout/restart for the cases of discarded tabs
 - add option for discarded tabs
+- race condition with typing space and window event handler

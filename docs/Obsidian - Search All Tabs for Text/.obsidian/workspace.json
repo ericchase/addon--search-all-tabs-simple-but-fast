@@ -8,18 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "4b3e297f298d6a60",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "workflow.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
             "id": "2aaa80875074d7ec",
             "type": "leaf",
             "state": {
@@ -31,8 +19,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"

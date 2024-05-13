@@ -115,6 +115,7 @@ function initiateSearch(caseSensitive = false) {
 (async function () {
   if ((await chrome.permissions.contains({ origins: ['<all_urls>'] })) === true) {
     SetupKeyClickHandlers(window, (evt) => {
+      // use hasFocus() here
       if (evt.key === 'Escape' || evt.key === ' ') {
         input_query.focus();
         input_query.select();
