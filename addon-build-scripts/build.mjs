@@ -1,16 +1,18 @@
 import { build } from './lib-build.mjs';
-import { deleteDirectory, getBrowsers, getSemanticVersion, mergeObjects, readJSONFile, run } from './lib.mjs';
+import { deleteDirectory, getSemanticVersion, mergeConfigs, readConfig, run } from './lib.mjs';
 
 await run('bun', ['run', 'format']);
 await deleteDirectory('./build/');
 
-const core_manifest = await readJSONFile('./src/manifest.json');
-core_manifest.version = await getSemanticVersion();
+const buildConfig = await readConfig('./build-config.json');
+const coreManifest = await readConfig('./src/manifest.json');
 
-for (const browser of await getBrowsers()) {
+coreManifest.set('version', await getSemanticVersion());
+
+for (const browser of /**@type{string[]}*/ (buildConfig.get('browsers'))) {
   (async function () {
-    const browser_manifest = await readJSONFile(`./src/${browser}/manifest.json`);
-    const build_manifest = mergeObjects(core_manifest, browser_manifest);
-    await build(browser, build_manifest);
+    const browserManifest = await readConfig(`./src/${browser}/manifest.json`);
+    const buildManifest = mergeConfigs(coreManifest, browserManifest);
+    await build(buildConfig, browser, buildManifest);
   })();
 }

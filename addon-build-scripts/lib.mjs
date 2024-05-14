@@ -1,49 +1,40 @@
-import { execFile } from 'node:child_process';
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import node_child_process from 'node:child_process';
+import node_fs from 'node:fs/promises';
+import node_path from 'node:path';
 
-/** @param {any[]} objects */
-export function mergeObjects(...objects) {
-  const to = /** @type {Record<any,any>} */ ({});
-  for (const from of objects) {
-    if (typeof from !== 'object') continue;
-    for (const key in from) {
-      if (from.hasOwnProperty(key)) {
-        if (typeof from[key] === 'object' && Array.isArray(from[key]) === false) {
-          to[key] = mergeObjects(to[key], from[key]);
-        } else {
-          to[key] = from[key];
+/** @param {string[]} strings */
+export function mergeJSON(...strings) {
+  /** @param {any[]} objects */
+  function mergeObjects(...objects) {
+    const to = /** @type {Record<any,any>} */ ({});
+    for (const from of objects) {
+      if (typeof from !== 'object') continue;
+      for (const key in from) {
+        if (from.hasOwnProperty(key)) {
+          if (typeof from[key] === 'object' && Array.isArray(from[key]) === false) {
+            to[key] = mergeObjects(to[key], from[key]);
+          } else {
+            to[key] = from[key];
+          }
         }
       }
     }
+    return to;
   }
-  return to;
+  return mergeObjects(strings.map((s) => JSON.parse(s)));
 }
 
 /** @param {string} path */
-export async function readJSONFile(path) {
-  return JSON.parse(await readFile(path, { encoding: 'utf8' }));
-}
-
-/** @param {string} path */
-export async function readTextFile(path) {
-  return await readFile(path, { encoding: 'utf8' });
-}
-
-/**
- * @param {string} path
- * @param {any} obj
- */
-export async function writeJSONFile(path, obj) {
-  await writeFile(path, JSON.stringify(obj), { encoding: 'utf8' });
+export async function readFile(path) {
+  return await node_fs.readFile(path, { encoding: 'utf8' });
 }
 
 /**
  * @param {string} path
  * @param {string} string
  */
-export async function writeTextFile(path, string) {
-  await writeFile(path, string, { encoding: 'utf8' });
+export async function writeFile(path, string) {
+  await node_fs.writeFile(path, string, { encoding: 'utf8' });
 }
 
 /**
@@ -52,15 +43,15 @@ export async function writeTextFile(path, string) {
  */
 export async function createDirectory(path, isFile = false) {
   if (isFile === true) {
-    await mkdir(dirname(path), { recursive: true });
+    await node_fs.mkdir(node_path.dirname(path), { recursive: true });
   } else {
-    await mkdir(path, { recursive: true });
+    await node_fs.mkdir(path, { recursive: true });
   }
 }
 
 /** @param {string} path */
 export async function deleteDirectory(path) {
-  await rm(path, { recursive: true, force: true });
+  await node_fs.rm(path, { recursive: true, force: true });
 }
 
 /** @param {string} text */
@@ -75,7 +66,7 @@ export function toSnakeCase(text) {
  */
 export function run(program, args) {
   return new Promise((resolve, reject) => {
-    execFile(program, args, (error, stdout, stderr) => {
+    node_child_process.execFile(program, args, (error, stdout, stderr) => {
       if (error) {
         return reject(error);
       }
@@ -86,25 +77,81 @@ export function run(program, args) {
 
 // config files
 
-export async function getBrowsers() {
-  return (await readJSONFile('./build-config.json')).browsers;
+export class Config {
+  /**
+   * @param {object} pojo
+   */
+  constructor(pojo) {
+    this.pojo = /**@type{Record<string,any>}*/ (pojo);
+  }
+  /**
+   * @param {string} key
+   * @memberof Config
+   */
+  get(key) {
+    return this.pojo[key];
+  }
+  /**
+   * @param {string} key
+   * @param {any} value
+   * @memberof Config
+   */
+  set(key, value) {
+    this.pojo[key] = value;
+  }
+  toJSON() {
+    return JSON.stringify(this.pojo);
+  }
 }
 
-/** @param {string} browser */
-export async function getBundleConfig(browser) {
-  return (await readJSONFile('./bundle-config.json'))[browser];
+/**
+ * @param {string} path
+ */
+export async function readConfig(path) {
+  return new Config(JSON.parse(await readFile(path)));
+}
+/**
+ * @param {Config} config
+ * @param {string} key
+ */
+
+export async function subConfig(config, key) {
+  return new Config(config.get(key));
+}
+/**
+ * @param {Config} configA
+ * @param {Config} configB
+ */
+
+export function mergeConfigs(configA, configB) {
+  /** @param {Record<string,any>[]} objects */
+  function mergeObjects(...objects) {
+    const to = /** @type {Record<string,any>} */ ({});
+    for (const from of objects) {
+      if (typeof from !== 'object') continue;
+      for (const key in from) {
+        if (from.hasOwnProperty(key)) {
+          if (typeof from[key] === 'object' && Array.isArray(from[key]) === false) {
+            to[key] = mergeObjects(to[key], from[key]);
+          } else {
+            to[key] = from[key];
+          }
+        }
+      }
+    }
+    return to;
+  }
+  return new Config(mergeObjects(configA.pojo, configB.pojo));
 }
 
-export async function getPaths() {
-  return (await readJSONFile('./build-config.json')).paths;
-}
+// addon version
 
 export async function getSemanticVersion() {
-  const { major, minor, patch } = await readJSONFile('./version.json');
+  const { major, minor, patch } = JSON.parse(await readFile('./version.json'));
   return `${major}.${minor}.${patch}`;
 }
 
 export async function incrementVersionPatch() {
-  const { major, minor, patch } = await readJSONFile('./version.json');
-  await writeJSONFile('./version.json', { major, minor, patch: patch + 1 });
+  const { major, minor, patch } = JSON.parse(await readFile('./version.json'));
+  await writeFile('./version.json', JSON.stringify({ major, minor, patch: patch + 1 }));
 }

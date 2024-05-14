@@ -1,33 +1,25 @@
 import { build } from './lib-build.mjs';
 import { bundle } from './lib-bundle.mjs';
-import {
-  deleteDirectory,
-  getBrowsers,
-  getBundleConfig,
-  getSemanticVersion,
-  incrementVersionPatch,
-  mergeObjects,
-  readJSONFile,
-  run,
-  writeJSONFile,
-} from './lib.mjs';
+import { deleteDirectory, getSemanticVersion, mergeConfigs, readConfig, run, subConfig, writeFile } from './lib.mjs';
 
 await run('bun', ['run', 'format']);
 await deleteDirectory('./build/');
 
-await incrementVersionPatch();
+const buildConfig = await readConfig('./build-config.json');
+const bundleConfig = await readConfig('./bundle-config.json');
+const coreManifest = await readConfig('./src/manifest.json');
 
-const core_manifest = await readJSONFile('./src/manifest.json');
-core_manifest.version = await getSemanticVersion();
+// await incrementVersionPatch();
+coreManifest.set('version', await getSemanticVersion());
 
-for (const browser of await getBrowsers()) {
+for (const browser of /**@type{string[]}*/ (buildConfig.get('browsers'))) {
   (async function () {
-    const browser_manifest = await readJSONFile(`./src/${browser}/manifest.json`);
-    const build_manifest = mergeObjects(core_manifest, browser_manifest);
-    const bundle_manifest = mergeObjects(build_manifest, getBundleConfig(browser));
-    await build(browser, bundle_manifest);
-    await bundle(browser, bundle_manifest);
+    const browserManifest = await readConfig(`./src/${browser}/manifest.json`);
+    const buildManifest = mergeConfigs(coreManifest, browserManifest);
+    const bundleManifest = mergeConfigs(buildManifest, await subConfig(bundleConfig, browser));
+    await build(buildConfig, browser, bundleManifest);
+    await bundle(browser, bundleManifest);
     // cleanup
-    writeJSONFile(`./build/${browser}/manifest.json`, build_manifest);
+    writeFile(`./build/${browser}/manifest.json`, buildManifest.toJSON());
   })();
 }

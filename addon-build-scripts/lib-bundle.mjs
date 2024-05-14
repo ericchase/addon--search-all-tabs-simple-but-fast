@@ -1,10 +1,11 @@
 import archiver from 'archiver';
-import { createWriteStream } from 'node:fs';
-import { createDirectory, toSnakeCase } from './lib.mjs';
+import node_fs from 'node:fs';
+
+import { Config, createDirectory, toSnakeCase } from './lib.mjs';
 
 /**
  * @param {string} browser
- * @param {any} manifest
+ * @param {Config} manifest
  */
 export async function bundle(browser, manifest) {
   await createDirectory(`./release/${browser}`);
@@ -22,7 +23,7 @@ export async function bundle(browser, manifest) {
   archive.on('error', function (err) {
     throw err;
   });
-  const output = createWriteStream(`./release/${browser}/${toSnakeCase(manifest.name)}-v${manifest.version}.zip`);
+  const output = node_fs.createWriteStream(`./release/${browser}/${toSnakeCase(manifest.get('name'))}-v${manifest.get('version')}.zip`);
   output.on('close', function () {
     console.log(`${browser}:`, archive.pointer() + ' total bytes');
   });

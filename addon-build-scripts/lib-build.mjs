@@ -1,19 +1,20 @@
-import { copyFile } from 'node:fs/promises';
-import { createDirectory, getPaths, writeJSONFile } from './lib.mjs';
+import node_fs from 'node:fs/promises';
+
+import { Config, createDirectory, writeFile } from './lib.mjs';
 
 /**
+ * @param {Config} buildConfig
  * @param {string} browser
- * @param {any} manifest
+ * @param {Config} manifest
  */
-export async function build(browser, manifest) {
+export async function build(buildConfig, browser, manifest) {
   await createDirectory(`./build/${browser}`);
-  // merge specific browser manifest with core manifest
-  await writeJSONFile(`./build/${browser}/manifest.json`, manifest);
+  await writeFile(`./build/${browser}/manifest.json`, manifest.toJSON());
   // copy files over
-  for (const path of await getPaths()) {
+  for (const path of /**@type{string[]}*/ (buildConfig.get('paths'))) {
     await createDirectory(`./build/${browser}/${path}`, true);
     try {
-      await copyFile(`./src/${path}`, `./build/${browser}/${path}`);
+      await node_fs.copyFile(`./src/${path}`, `./build/${browser}/${path}`);
     } catch (err) {}
   }
 }
