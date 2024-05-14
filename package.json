@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build": "bun run ./addon-build-scripts/build.mjs",
-    "bundle": "bun run ./addon-build-scripts/bundle.mjs",
+    "build": "node ./addon-build-scripts/build.mjs",
+    "bundle": "node ./addon-build-scripts/bundle.mjs",
     "format-debug": "prettier . --debug-check",
     "format": "prettier . --write"
   },
