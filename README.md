@@ -8,13 +8,13 @@ Features:
 
 - Case-sensitive and case-insensitive search.
 - Restores tabs that have been discarded by the browser due to inactivity.
-  * Discarded tabs cannot be searched.
-  * Activates each tab instead of reloading the tab, so that previous state is retained.
+  - \* Discarded tabs cannot be searched.
+  - \* Activates each tab instead of reloading the tab, so that previous state is retained.
 
 Limitations:
 
 - Cannot search tabs with specific URLs that are restricted by the browser.
-  * This typically includes "about..." and "chrome..." pages and the pages from the browser's add-on/web store.
+  - \* This typically includes "about..." and "chrome..." pages and the pages from the browser's add-on/web store.
 
 Please send feedback, feature requests, and ideas to the GitHub page (https://github.com/ericchase/addon--search-all-tabs-simple-but-fast/issues).
 

@@ -1,23 +1,26 @@
 {
   "browsers": ["Chrome", "Firefox"],
-  "paths": [
-    "icons/icon-16.png",
-    "icons/icon-32.png",
-    "icons/icon-48.png",
-    "icons/icon-128.png",
-    "icons/icon-dark-16.png",
-    "icons/icon-dark-32.png",
-    "icons/icon-dark-48.png",
-    "icons/icon-dark-128.png",
-    "icons/icon-light-16.png",
-    "icons/icon-light-32.png",
-    "icons/icon-light-48.png",
-    "icons/icon-light-128.png",
-    "index.css",
-    "normalize.css",
-    "index.html",
-    "helpers.js",
-    "index.js",
-    "service-worker.js"
-  ]
+  "paths": {
+    "/": ["LICENSE", "NOTICE"],
+    "src": [
+      "icons/icon-16.png",
+      "icons/icon-32.png",
+      "icons/icon-48.png",
+      "icons/icon-128.png",
+      "icons/icon-dark-16.png",
+      "icons/icon-dark-32.png",
+      "icons/icon-dark-48.png",
+      "icons/icon-dark-128.png",
+      "icons/icon-light-16.png",
+      "icons/icon-light-32.png",
+      "icons/icon-light-48.png",
+      "icons/icon-light-128.png",
+      "index.css",
+      "normalize.css",
+      "index.html",
+      "helpers.js",
+      "index.js",
+      "service-worker.js"
+    ]
+  }
 }

@@ -11,10 +11,13 @@ export async function build(buildConfig, browser, manifest) {
   await createDirectory(`./build/${browser}`);
   await writeFile(`./build/${browser}/manifest.json`, manifest.toJSON());
   // copy files over
-  for (const path of /**@type{string[]}*/ (buildConfig.get('paths'))) {
-    await createDirectory(`./build/${browser}/${path}`, true);
-    try {
-      await node_fs.copyFile(`./src/${path}`, `./build/${browser}/${path}`);
-    } catch (err) {}
+  const paths = /**@type{Record<string,string[]>}*/ (buildConfig.get('paths'));
+  for (const base of Object.keys(paths)) {
+    for (const path of paths[base]) {
+      await createDirectory(`./build/${browser}/${path}`, true);
+      try {
+        await node_fs.copyFile(`./${base}/${path}`, `./build/${browser}/${path}`);
+      } catch (err) {}
+    }
   }
 }
