@@ -62,14 +62,13 @@ export function toSnakeCase(text) {
 /**
  * @param {string} program
  * @param {string[]} args
+ * @param {import('node:fs').ObjectEncodingOptions & import('node:child_process').ExecFileOptions} options
  * @returns {Promise<{stdout:string,stderr:string}>}
  */
-export function run(program, args) {
+export function run(program, args, options = {}) {
   return new Promise((resolve, reject) => {
     node_child_process.execFile(program, args, (error, stdout, stderr) => {
-      if (error) {
-        return reject(error);
-      }
+      if (error) return reject(error);
       return resolve({ stdout, stderr });
     });
   });

@@ -15,13 +15,13 @@ function debounce(callback, delay) {
   };
 }
 
-const build = debounce(async () => {
-  const { stdout, stderr } = await run('bun', ['run', 'build']);
-  if (stdout) console.log(stdout.slice(0, stdout.lastIndexOf('\n')));
-  if (stderr) console.log(stderr.slice(0, stderr.lastIndexOf('\n')));
-}, 250);
-
 try {
+  const bun_build = debounce(async () => {
+    const { stdout, stderr } = await run('bun', ['run', 'build']);
+    if (stdout) console.log(stdout.slice(0, stdout.lastIndexOf('\n')));
+    if (stderr) console.log(stderr.slice(0, stderr.lastIndexOf('\n')));
+  }, 250);
+
   await watch({
     path: './src', //
     debounce_interval: 250,
@@ -44,7 +44,7 @@ try {
             console.log(' renamed >', change.slice(2).split('\t').join(' -> '));
             break;
         }
-        build();
+        bun_build();
       }
     },
     error_cb: (error) => console.error('ERROR:', error),
