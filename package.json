@@ -2,6 +2,7 @@
   "scripts": {
     "build": "node ./addon-build-scripts/build.mjs",
     "bundle": "node ./addon-build-scripts/bundle.mjs",
+    "dev": "node ./addon-build-scripts/watch.mjs",
     "format-debug": "prettier . --debug-check",
     "format": "prettier . --write"
   },

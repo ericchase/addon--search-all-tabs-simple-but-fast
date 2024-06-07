@@ -2,6 +2,35 @@ chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: './index.html' });
 });
 
+// chrome.contextMenus.create({
+//   contexts: ['action'],
+//   id: 'open-store-page',
+//   title: 'Open Store Page',
+// });
+chrome.contextMenus.create({
+  contexts: ['action'],
+  id: 'open-store-page-chrome',
+  // parentId: 'open-store-page',
+  title: 'Open Chrome Web Store Page',
+});
+chrome.contextMenus.create({
+  contexts: ['action'],
+  id: 'open-store-page-firefox',
+  // parentId: 'open-store-page',
+  title: 'Open Firefox Browser Add-ons Page',
+});
+
+chrome.contextMenus.onClicked.addListener((info) => {
+  switch (info.menuItemId) {
+    case 'open-store-page-chrome':
+      chrome.tabs.create({ url: 'https://chromewebstore.google.com/detail/search-all-tabs-simple-bu/lmeapdggiiabkbhbkdcppjnfkcfjhlpo' });
+      break;
+    case 'open-store-page-firefox':
+      chrome.tabs.create({ url: 'https://addons.mozilla.org/en-US/firefox/addon/searchalltabs-simplebutfast/' });
+      break;
+  }
+});
+
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async ({ query, caseSensitive }) => {
     await search({ port, query, caseSensitive });
