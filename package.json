@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "build": "node ./addon-build-scripts/build.mjs",
-    "bundle": "node ./addon-build-scripts/bundle.mjs",
-    "dev": "node ./addon-build-scripts/dev.mjs",
+    "build": "bun ./addon-build-scripts/build.mjs",
+    "bundle": "bun ./addon-build-scripts/bundle.mjs",
+    "dev": "bun ./addon-build-scripts/dev.mjs",
     "format-debug": "prettier . --debug-check",
     "format": "prettier . --write"
   },
