@@ -2,21 +2,14 @@ chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: './index.html' });
 });
 
-// chrome.contextMenus.create({
-//   contexts: ['action'],
-//   id: 'open-store-page',
-//   title: 'Open Store Page',
-// });
 chrome.contextMenus.create({
   contexts: ['action'],
   id: 'open-store-page-chrome',
-  // parentId: 'open-store-page',
   title: 'Open Chrome Web Store Page',
 });
 chrome.contextMenus.create({
   contexts: ['action'],
   id: 'open-store-page-firefox',
-  // parentId: 'open-store-page',
   title: 'Open Firefox Browser Add-ons Page',
 });
 
