@@ -37,6 +37,11 @@ export async function writeFile(path, string) {
   await node_fs.writeFile(path, string, { encoding: 'utf8' });
 }
 
+/** @param {string} path */
+export async function deleteFile(path) {
+  await node_fs.rm(path, { force: true });
+}
+
 /**
  * @param {string} path
  * @param {boolean} isFile
@@ -72,6 +77,30 @@ export function run(program, args, options = {}) {
       return resolve({ stdout, stderr });
     });
   });
+}
+
+/**
+ * @param {()=>void} callback
+ * @param {number} delay
+ */
+export function debounce(callback, delay) {
+  let timer = /**@type{NodeJS.Timeout | undefined}*/ (undefined);
+  return function () {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback();
+    }, delay);
+  };
+}
+
+/**
+ * @param {object} params
+ * @param {string=} params.stdout
+ * @param {string=} params.stderr
+ */
+export function stdpipe({ stdout = '', stderr = '' }) {
+  if (stdout) console.log(stdout.slice(0, stdout.lastIndexOf('\n')));
+  if (stderr) console.log(stderr.slice(0, stderr.lastIndexOf('\n')));
 }
 
 // config files
